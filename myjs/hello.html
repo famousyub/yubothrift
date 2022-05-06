@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Hello Thrift</title>
+      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
+<script src="https://unpkg.com/semantic-ui-vue/dist/commonjs/semantic-ui-vue.js"></script> -->
+<link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/monoid" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body>
+
+
+
+
+
+    <div id="app">
+      
+      Name: <input type="text"
+      id="name_in" v-model="name_in">
+
+
+      <!-- <span hidden v-bind:class="{textStyles: isStyled}">
+
+        <h3> {{ title }}</h3>
+        <h4>{{subTitles[0]}}</h4>
+          <p>The styles on this page come from creating a class 'textStyles' and then v-binding it to         the root element with a Boolean 'isStyled' within the data object.</p>
+        <h4>{{subTitles[1]}}</h4>
+          <p>Here is some raw text that is not generated using Vue but still exists within the Vue           instance and alongside dynamic Vue components.</p>
+      <h4>{{subTitles[2]}}</h4>
+        <p> {{ dynamic_para }}</p>
+      <h4>{{subTitles[3]}}</h4>
+        <p>Let's make a dynamic list using a <span v-bind:class="{emphasis: isStyled}">v-for binding</span> (equivalent to a foreach loop)...</p>
+            <ul>
+              <li v-for="list_item in list_items ">
+                 {{ list_item }}
+              </li>
+             </ul>
+      </span> -->
+      <input type="button" id="get_msg" value="Get Message" @click="send()">
+      <div id="output"></div>
+    </div>
+
+
+   
+    
+
+    <script src="thrift.js"></script>
+    <script src="gen-js/helloSvc.js"></script>
+      <!-- <script src="gen-nodejs/helloSvc.js"></script> -->
+
+      <script>
+        const App = new Vue({
+      el: '#app',
+      data :{
+        name_in :""
+      },
+      methods : {
+         send() {
+      //   Setup Apache Thrift Client I/O Stack
+
+        if(typeof Thrift === "undefined"){ console.log("error handling"); return ;}
+        var transport = new Thrift.TXHRTransport("http://localhost:9090/hello/");
+        var protocol = new Thrift.TJSONProtocol(transport);
+        var client = new helloSvcClient(protocol);
+
+      // Wire Apache Thrift RPC call to DOM Click Event -->
+        var nameElement = document.getElementById("name_in");
+        var outputElement = document.getElementById("output");
+        document.getElementById("get_msg")
+          .addEventListener("click", function(){
+            outputElement.innerHTML =
+              client.jscpp_message(nameElement.value);
+          });
+      }
+      }
+
+
+     /* data: {
+        title: "Practising Vue.js",
+        subTitles: [
+          'v-bind', 
+          'Non-dynamic text', 
+          'Dynamic text', 
+          'v-for'
+        ],
+        isStyled: true,
+        dynamic_para: "This sentence is generated dynamically.",
+        list_items: [
+          "banana", 
+          "orange", 
+          "mango"
+        ]
+      },*/
+    })
+
+      </script>
+    <script>
+
+
+
+
+
+
+
+      
+    </script>
+  </body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("p").click(function(){
+    $(this).hide();
+  });
+});
+</script>
+</head>
+<body>
+
+<p>If you click on me, I will disappear.</p>
+<p>Click me away!</p>
+<p>Click me too!</p>
+
+</body>
+</html>
